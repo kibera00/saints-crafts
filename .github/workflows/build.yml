@@ -22,8 +22,11 @@ jobs:
     - name: Build Debug APK
       run: |
         echo "include(':app')" > settings.gradle.kts
-        chmod +x gradlew || gradle wrapper
-        ./gradlew assembleDebug
+        if [ ! -f "./gradlew" ]; then
+          gradle wrapper
+        fi
+        chmod +x gradlew
+        ./gradlew assembleDebug || gradle assembleDebug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
